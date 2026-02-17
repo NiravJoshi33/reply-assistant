@@ -52,7 +52,7 @@ export default function App() {
   }, [isOpen]);
 
   const handleGenerate = useCallback(async () => {
-    if (!tweetText || !selectedToneId) return;
+    if ((!tweetText && !additionalContext.trim()) || !selectedToneId) return;
     setIsLoading(true);
     setError('');
     setGeneratedReply('');
@@ -141,7 +141,7 @@ export default function App() {
         <button
           className="ra-generate"
           onClick={handleGenerate}
-          disabled={isLoading || !tweetText}
+          disabled={isLoading || (!tweetText && !additionalContext.trim())}
         >
           {isLoading ? (
             <span className="ra-spinner" />
