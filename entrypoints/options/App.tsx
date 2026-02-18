@@ -1,27 +1,29 @@
-import { useState, useEffect } from 'react';
-import { apiKeyItem, modelItem, tonesItem } from '@/utils/storage';
-import { DEFAULT_TONES } from '@/utils/default-tones';
-import { ToneIcon, AVAILABLE_ICONS } from '@/utils/tone-icons';
-import type { Tone } from '@/utils/storage';
+import { useState, useEffect } from "react";
+import { apiKeyItem, modelItem, tonesItem } from "@/utils/storage";
+import { DEFAULT_TONES } from "@/utils/default-tones";
+import { ToneIcon, AVAILABLE_ICONS } from "@/utils/tone-icons";
+import type { Tone } from "@/utils/storage";
 
 const MODELS = [
-  { id: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash (Fast/Cheap)' },
-  { id: 'anthropic/claude-3-haiku', label: 'Claude 3 Haiku (Fast)' },
-  { id: 'openai/gpt-4o-mini', label: 'GPT-4o Mini (Fast)' },
+  { id: "google/gemini-2.0-flash-001", label: "Gemini 2.0 Flash (Fast/Cheap)" },
+  { id: "anthropic/claude-3-haiku", label: "Claude 3 Haiku (Fast)" },
+  { id: "openai/gpt-4o-mini", label: "GPT-4o Mini (Fast)" },
+  { id: "openai/gpt-oss-20b", label: "GPT OSS 20B" },
+  { id: "openai/gpt-oss-120b", label: "GPT OSS 120B" },
 ];
 
 export default function App() {
-  const [apiKey, setApiKey] = useState('');
-  const [model, setModel] = useState('');
+  const [apiKey, setApiKey] = useState("");
+  const [model, setModel] = useState("");
   const [customTones, setCustomTones] = useState<Tone[]>([]);
   const [saved, setSaved] = useState(false);
 
   // Editing state
   const [editingTone, setEditingTone] = useState<Tone | null>(null);
   const [showToneForm, setShowToneForm] = useState(false);
-  const [toneName, setToneName] = useState('');
-  const [tonePrompt, setTonePrompt] = useState('');
-  const [toneIcon, setToneIcon] = useState('');
+  const [toneName, setToneName] = useState("");
+  const [tonePrompt, setTonePrompt] = useState("");
+  const [toneIcon, setToneIcon] = useState("");
 
   useEffect(() => {
     apiKeyItem.getValue().then(setApiKey);
@@ -41,12 +43,12 @@ export default function App() {
       setEditingTone(tone);
       setToneName(tone.name);
       setTonePrompt(tone.prompt);
-      setToneIcon(tone.icon || '');
+      setToneIcon(tone.icon || "");
     } else {
       setEditingTone(null);
-      setToneName('');
-      setTonePrompt('');
-      setToneIcon('');
+      setToneName("");
+      setTonePrompt("");
+      setToneIcon("");
     }
     setShowToneForm(true);
   };
@@ -58,7 +60,12 @@ export default function App() {
     if (editingTone) {
       updated = customTones.map((t) =>
         t.id === editingTone.id
-          ? { ...t, name: toneName.trim(), prompt: tonePrompt.trim(), icon: toneIcon.trim() || undefined }
+          ? {
+              ...t,
+              name: toneName.trim(),
+              prompt: tonePrompt.trim(),
+              icon: toneIcon.trim() || undefined,
+            }
           : t,
       );
     } else {
@@ -99,8 +106,12 @@ export default function App() {
             placeholder="sk-or-..."
           />
           <p className="hint">
-            Get your API key from{' '}
-            <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer">
+            Get your API key from{" "}
+            <a
+              href="https://openrouter.ai/keys"
+              target="_blank"
+              rel="noreferrer"
+            >
               openrouter.ai/keys
             </a>
           </p>
@@ -108,7 +119,11 @@ export default function App() {
 
         <div className="field">
           <label htmlFor="model">Model</label>
-          <select id="model" value={model} onChange={(e) => setModel(e.target.value)}>
+          <select
+            id="model"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+          >
             {MODELS.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.label}
@@ -118,7 +133,7 @@ export default function App() {
         </div>
 
         <button className="btn-primary" onClick={saveSettings}>
-          {saved ? 'Saved!' : 'Save Settings'}
+          {saved ? "Saved!" : "Save Settings"}
         </button>
       </section>
 
@@ -129,7 +144,11 @@ export default function App() {
           {DEFAULT_TONES.map((tone) => (
             <div key={tone.id} className="tone-card">
               <div className="tone-header">
-                {tone.icon && <span className="tone-icon"><ToneIcon name={tone.icon} size={16} /></span>}
+                {tone.icon && (
+                  <span className="tone-icon">
+                    <ToneIcon name={tone.icon} size={16} />
+                  </span>
+                )}
                 <strong>{tone.name}</strong>
               </div>
               <p className="tone-prompt">{tone.prompt}</p>
@@ -155,13 +174,23 @@ export default function App() {
           {customTones.map((tone) => (
             <div key={tone.id} className="tone-card">
               <div className="tone-header">
-                {tone.icon && <span className="tone-icon"><ToneIcon name={tone.icon} size={16} /></span>}
+                {tone.icon && (
+                  <span className="tone-icon">
+                    <ToneIcon name={tone.icon} size={16} />
+                  </span>
+                )}
                 <strong>{tone.name}</strong>
                 <div className="tone-actions">
-                  <button className="btn-text" onClick={() => openToneForm(tone)}>
+                  <button
+                    className="btn-text"
+                    onClick={() => openToneForm(tone)}
+                  >
                     Edit
                   </button>
-                  <button className="btn-text btn-danger" onClick={() => deleteTone(tone.id)}>
+                  <button
+                    className="btn-text btn-danger"
+                    onClick={() => deleteTone(tone.id)}
+                  >
                     Delete
                   </button>
                 </div>
@@ -174,7 +203,7 @@ export default function App() {
         {/* Tone Form */}
         {showToneForm && (
           <div className="tone-form">
-            <h3>{editingTone ? 'Edit Tone' : 'New Tone'}</h3>
+            <h3>{editingTone ? "Edit Tone" : "New Tone"}</h3>
             <div className="field">
               <label>Name</label>
               <input
@@ -188,8 +217,8 @@ export default function App() {
               <div className="icon-picker">
                 <button
                   type="button"
-                  className={`icon-option ${!toneIcon ? 'icon-selected' : ''}`}
-                  onClick={() => setToneIcon('')}
+                  className={`icon-option ${!toneIcon ? "icon-selected" : ""}`}
+                  onClick={() => setToneIcon("")}
                   title="None"
                 >
                   --
@@ -198,7 +227,7 @@ export default function App() {
                   <button
                     key={name}
                     type="button"
-                    className={`icon-option ${toneIcon === name ? 'icon-selected' : ''}`}
+                    className={`icon-option ${toneIcon === name ? "icon-selected" : ""}`}
                     onClick={() => setToneIcon(name)}
                     title={name}
                   >
@@ -218,9 +247,12 @@ export default function App() {
             </div>
             <div className="form-actions">
               <button className="btn-primary" onClick={saveTone}>
-                {editingTone ? 'Update' : 'Add'} Tone
+                {editingTone ? "Update" : "Add"} Tone
               </button>
-              <button className="btn-secondary" onClick={() => setShowToneForm(false)}>
+              <button
+                className="btn-secondary"
+                onClick={() => setShowToneForm(false)}
+              >
                 Cancel
               </button>
             </div>
