@@ -19,6 +19,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [additionalContext, setAdditionalContext] = useState('');
+  const [platform, setPlatform] = useState<'x' | 'linkedin'>('x');
 
   // Load custom tones
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function App() {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
       setTweetText(detail.tweetText);
+      setPlatform(detail.platform || 'x');
       setGeneratedReply('');
       setError('');
       setCopied(false);
@@ -64,6 +66,7 @@ export default function App() {
         toneId: selectedToneId,
         originalTweet: tweetText,
         additionalContext: additionalContext.trim() || undefined,
+        platform,
       } satisfies GenerateReplyRequest);
 
       if (response.success && response.text) {
@@ -76,7 +79,7 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  }, [tweetText, selectedToneId, additionalContext]);
+  }, [tweetText, selectedToneId, additionalContext, platform]);
 
   const handleCopy = useCallback(async () => {
     if (!generatedReply) return;

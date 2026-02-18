@@ -8,6 +8,7 @@ export default defineContentScript({
     '*://pro.x.com/*',
     '*://tweetdeck.twitter.com/*',
     '*://pro.twitter.com/*',
+    '*://www.linkedin.com/*',
   ],
   cssInjectionMode: 'ui',
 

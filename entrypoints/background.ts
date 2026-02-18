@@ -41,6 +41,12 @@ async function handleGenerateReply(
     return { success: false, error: 'Selected tone not found.' };
   }
 
+  const isLinkedIn = request.platform === 'linkedin';
+  const postNoun = isLinkedIn ? 'LinkedIn post' : 'tweet';
+  const lengthGuideline = isLinkedIn
+    ? 'Keep it concise and suitable for a LinkedIn comment (under 500 characters when possible).'
+    : 'Keep it concise and suitable for a tweet reply (under 280 characters when possible).';
+
   try {
     const response = await fetch(
       'https://openrouter.ai/api/v1/chat/completions',
@@ -57,11 +63,11 @@ async function handleGenerateReply(
           messages: [
             {
               role: 'system',
-              content: `${tone.prompt}\n\nIMPORTANT RULES:\n- Write ONLY the reply text, nothing else.\n- Do NOT include quotes, prefixes like "Reply:", or any meta-commentary.\n- Keep it concise and suitable for a tweet reply (under 280 characters when possible).\n- Match the language of the original tweet.`,
+              content: `${tone.prompt}\n\nIMPORTANT RULES:\n- Write ONLY the reply text, nothing else.\n- Do NOT include quotes, prefixes like "Reply:", or any meta-commentary.\n- ${lengthGuideline}\n- Match the language of the original ${postNoun}.`,
             },
             {
               role: 'user',
-              content: `Write a reply to this tweet:\n\n"${request.originalTweet}"${request.additionalContext ? `\n\nAdditional context (e.g. description of image/video in the tweet):\n${request.additionalContext}` : ''}`,
+              content: `Write a reply to this ${postNoun}:\n\n"${request.originalTweet}"${request.additionalContext ? `\n\nAdditional context (e.g. description of image/video in the ${postNoun}):\n${request.additionalContext}` : ''}`,
             },
           ],
           max_tokens: 300,

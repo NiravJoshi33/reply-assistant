@@ -5,13 +5,14 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
     name: 'Reply Assistant',
-    description: 'AI-powered reply suggestions for X Pro',
+    description: 'AI-powered reply suggestions for X and LinkedIn',
     permissions: ['storage', 'activeTab'],
     host_permissions: [
       'https://x.com/*',
       'https://pro.x.com/*',
       'https://tweetdeck.twitter.com/*',
       'https://pro.twitter.com/*',
+      'https://www.linkedin.com/*',
       'https://openrouter.ai/*',
     ],
   },

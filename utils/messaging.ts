@@ -3,6 +3,7 @@ export interface GenerateReplyRequest {
   toneId: string;
   originalTweet: string;
   additionalContext?: string;
+  platform?: 'x' | 'linkedin';
 }
 
 export interface GenerateReplyResponse {
