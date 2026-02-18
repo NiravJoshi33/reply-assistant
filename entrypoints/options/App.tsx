@@ -7,11 +7,7 @@ import type { Tone } from '@/utils/storage';
 const MODELS = [
   { id: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash (Fast/Cheap)' },
   { id: 'anthropic/claude-3-haiku', label: 'Claude 3 Haiku (Fast)' },
-  { id: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet (Quality)' },
   { id: 'openai/gpt-4o-mini', label: 'GPT-4o Mini (Fast)' },
-  { id: 'openai/gpt-4o', label: 'GPT-4o (Quality)' },
-  { id: 'openai/gpt-oss-20b', label: 'GPT OSS 20B' },
-  { id: 'openai/gpt-oss-120b', label: 'GPT OSS 120B' },
 ];
 
 export default function App() {
